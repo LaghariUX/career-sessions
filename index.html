@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Career Development Sessions — Register</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --ink-muted: #5a5a7a;
+    --ink-faint: #9898b8;
+    --surface: #f7f6f2;
+    --card: #ffffff;
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-dark: #1d4ed8;
+    --success: #16a34a;
+    --success-light: #dcfce7;
+    --danger: #dc2626;
+    --danger-light: #fee2e2;
+    --border: #e2e1dc;
+    --radius: 14px;
+    --radius-sm: 8px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--surface);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .page {
+    max-width: 680px;
+    margin: 0 auto;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Header ── */
+  .header {
+    margin-bottom: 2.5rem;
+    text-align: center;
+  }
+
+  .header-eyebrow {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+  }
+
+  .header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+  }
+
+  .header p {
+    font-size: 15px;
+    color: var(--ink-muted);
+    line-height: 1.7;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* ── Announcement banner ── */
+  .announcement {
+    background: var(--ink);
+    color: #e8e8f0;
+    border-radius: var(--radius);
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .announcement::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    background: rgba(37,99,235,0.18);
+  }
+
+  .ann-label {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #7b7baa;
+    margin-bottom: 0.5rem;
+  }
+
+  .ann-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: #ffffff;
+    margin-bottom: 0.75rem;
+  }
+
+  .ann-body {
+    font-size: 13.5px;
+    color: #b0b0cc;
+    line-height: 1.75;
+    white-space: pre-line;
+  }
+
+  .ann-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+  }
+
+  .copy-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: #7b7baa;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: var(--radius-sm);
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .copy-btn:hover { background: rgba(255,255,255,0.14); color: #fff; }
+
+  /* ── Divider ── */
+  .section-title {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 1rem;
+  }
+
+  /* ── Session cards ── */
+  .sessions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 12px;
+    margin-bottom: 2rem;
+  }
+
+  @media (max-width: 500px) {
+    .sessions { grid-template-columns: 1fr; }
+  }
+
+  .scard {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem 1rem;
+    cursor: pointer;
+    transition: border-color 0.18s, box-shadow 0.18s, transform 0.15s;
+    position: relative;
+    user-select: none;
+  }
+
+  .scard:hover { border-color: #93c5fd; box-shadow: 0 4px 18px rgba(37,99,235,0.08); transform: translateY(-2px); }
+  .scard.selected { border-color: var(--accent); border-width: 2px; box-shadow: 0 4px 20px rgba(37,99,235,0.14); }
+  .scard.full { opacity: 0.5; cursor: not-allowed; }
+  .scard.full:hover { transform: none; box-shadow: none; border-color: var(--border); }
+
+  .scard-check {
+    display: none;
+    position: absolute;
+    top: 12px; right: 12px;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--accent);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .scard-check svg { width: 11px; height: 11px; stroke: white; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+  .scard.selected .scard-check { display: flex; }
+
+  .scard-icon { font-size: 24px; margin-bottom: 10px; display: block; }
+  .scard-name { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 3px; }
+  .scard-meta { font-size: 12px; color: var(--ink-faint); }
+
+  .slots-visual {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 10px;
+  }
+
+  .slot-pip {
+    width: 14px; height: 14px;
+    border-radius: 3px;
+    background: var(--accent-light);
+    border: 1px solid #93c5fd;
+    transition: background 0.2s;
+  }
+
+  .slot-pip.taken {
+    background: #fca5a5;
+    border-color: #f87171;
+  }
+
+  .slots-left {
+    font-size: 11px;
+    color: var(--ink-faint);
+    margin-top: 6px;
+  }
+
+  .slots-left.warn { color: var(--danger); font-weight: 500; }
+  .slots-left.gone { color: var(--danger); font-weight: 600; }
+
+  /* ── Form ── */
+  .form-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  @media (max-width: 500px) { .form-grid { grid-template-columns: 1fr; } }
+
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  .form-group.full { grid-column: 1 / -1; }
+
+  .form-group label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-muted);
+    letter-spacing: 0.2px;
+  }
+
+  .form-group input, .form-group select {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 9px 12px;
+    outline: none;
+    transition: border-color 0.18s, box-shadow 0.18s;
+  }
+
+  .form-group input:focus, .form-group select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+  }
+
+  .form-group input::placeholder { color: var(--ink-faint); }
+
+  /* ── Submit ── */
+  .submit-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    width: 100%;
+    padding: 13px;
+    border-radius: var(--radius);
+    border: none;
+    background: var(--accent);
+    color: white;
+    cursor: pointer;
+    transition: background 0.18s, transform 0.12s;
+    letter-spacing: 0.2px;
+  }
+
+  .submit-btn:hover:not(:disabled) { background: var(--accent-dark); transform: translateY(-1px); }
+  .submit-btn:active:not(:disabled) { transform: translateY(0); }
+
+  .submit-btn:disabled {
+    background: #c7c7d9;
+    color: #8888aa;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* ── Legend ── */
+  .legend {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--ink-muted);
+  }
+
+  .legend-pip { width: 12px; height: 12px; border-radius: 3px; }
+  .legend-pip.avail { background: var(--accent-light); border: 1px solid #93c5fd; }
+  .legend-pip.taken { background: #fca5a5; border: 1px solid #f87171; }
+
+  /* ── Success ── */
+  .success-screen {
+    display: none;
+    background: var(--success-light);
+    border: 1.5px solid #86efac;
+    border-radius: var(--radius);
+    padding: 2.5rem 2rem;
+    text-align: center;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .success-screen.show { display: block; }
+
+  .success-icon {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: var(--success);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+  }
+
+  .success-icon svg { width: 24px; height: 24px; stroke: white; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+  .success-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.6rem;
+    color: var(--success);
+    margin-bottom: 0.5rem;
+  }
+
+  .success-sub { font-size: 14px; color: #166534; line-height: 1.7; }
+  .success-detail { margin-top: 1rem; font-size: 13px; color: #15803d; background: rgba(255,255,255,0.6); border-radius: var(--radius-sm); padding: 10px 14px; display: inline-block; }
+
+  /* ── Note ── */
+  .note {
+    font-size: 12px;
+    color: var(--ink-faint);
+    text-align: center;
+    margin-top: 1.25rem;
+    line-height: 1.6;
+  }
+
+  .tag-opt { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-muted); background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 5px 12px; cursor: pointer; transition: border-color 0.15s, background 0.15s, color 0.15s; user-select: none; }
+  .tag-opt:hover { border-color: #93c5fd; color: var(--accent); }
+  .tag-opt input[type="checkbox"] { accent-color: var(--accent); width: 13px; height: 13px; }
+  .error-msg { font-size: 12px; color: var(--danger); margin-top: 10px; display: none; }
+  .error-msg.show { display: block; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <span class="header-eyebrow">University of Birmingham Dubai</span>
+    <h1>Book Your Session</h1>
+    <p>30-minute one-on-one sessions with our career advisor. Only 10 slots per session — first registered, first served.</p>
+    <div style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border);display:inline-block;">
+      <p style="font-size:15px;font-weight:500;color:var(--ink);margin-bottom:2px;">Dr. Khalil Laghari</p>
+      <p style="font-size:13px;color:var(--ink-muted);">Adjunct Professor &amp; Industry Leader · University of Birmingham Dubai</p>
+    </div>
+  </div>
+
+  <!-- Sessions -->
+  <div class="section-title">Select your session(s)</div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-pip avail"></div> Available</div>
+    <div class="legend-item"><div class="legend-pip taken"></div> Taken</div>
+  </div>
+
+  <div class="sessions">
+    <div class="scard" id="card-interview" onclick="toggleSession('interview')">
+      <div class="scard-check">
+        <svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg>
+      </div>
+      <span class="scard-icon">🎤</span>
+      <div class="scard-name">Mock Interview</div>
+      <div class="scard-meta">30 min · 10 slots</div>
+      <div class="slots-visual" id="pips-interview"></div>
+      <div class="slots-left" id="left-interview"></div>
+    </div>
+
+    <div class="scard" id="card-cv" onclick="toggleSession('cv')">
+      <div class="scard-check">
+        <svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg>
+      </div>
+      <span class="scard-icon">📄</span>
+      <div class="scard-name">CV Review</div>
+      <div class="scard-meta">30 min · 10 slots</div>
+      <div class="slots-visual" id="pips-cv"></div>
+      <div class="slots-left" id="left-cv"></div>
+    </div>
+
+    <div class="scard" id="card-portfolio" onclick="toggleSession('portfolio')">
+      <div class="scard-check">
+        <svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg>
+      </div>
+      <span class="scard-icon">🗂️</span>
+      <div class="scard-name">Portfolio Review</div>
+      <div class="scard-meta">30 min · 10 slots</div>
+      <div class="slots-visual" id="pips-portfolio"></div>
+      <div class="slots-left" id="left-portfolio"></div>
+    </div>
+  </div>
+
+  <!-- Form -->
+  <div class="form-card" id="form-section">
+    <div class="section-title" style="margin-bottom:1.25rem;">Your details</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Full name *</label>
+        <input type="text" id="f-name" placeholder="e.g. Ahmed Al-Rashid" />
+      </div>
+      <div class="form-group">
+        <label>Student ID *</label>
+        <input type="text" id="f-id" placeholder="e.g. 20231045" />
+      </div>
+      <div class="form-group">
+        <label>Email address *</label>
+        <input type="email" id="f-email" placeholder="student@university.edu" />
+      </div>
+      <div class="form-group">
+        <label>Programme / Major *</label>
+        <input type="text" id="f-programme" placeholder="e.g. Computer Science" />
+      </div>
+      <div class="form-group full">
+        <label>Year of study</label>
+        <select id="f-year">
+          <option value="">Select year</option>
+          <option>Year 1</option>
+          <option>Year 2</option>
+          <option>Year 3</option>
+          <option>Year 4</option>
+          <option>Postgraduate</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="border-top: 1px solid var(--border); margin: 1.25rem 0;"></div>
+    <div class="section-title" style="margin-bottom:1rem;">Career interests</div>
+
+    <div class="form-grid">
+      <div class="form-group full">
+        <label>Roles / job titles you are targeting *</label>
+        <input type="text" id="f-roles" placeholder="e.g. UX Designer, Product Manager, Data Analyst" />
+      </div>
+      <div class="form-group full">
+        <label>Industries or sectors of interest</label>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:2px;" id="industry-tags">
+          <label class="tag-opt"><input type="checkbox" value="Technology"> Technology</label>
+          <label class="tag-opt"><input type="checkbox" value="Healthcare"> Healthcare</label>
+          <label class="tag-opt"><input type="checkbox" value="Finance"> Finance</label>
+          <label class="tag-opt"><input type="checkbox" value="Education"> Education</label>
+          <label class="tag-opt"><input type="checkbox" value="Government"> Government</label>
+          <label class="tag-opt"><input type="checkbox" value="Non-profit"> Non-profit</label>
+          <label class="tag-opt"><input type="checkbox" value="Creative & Media"> Creative & Media</label>
+          <label class="tag-opt"><input type="checkbox" value="Consulting"> Consulting</label>
+          <label class="tag-opt"><input type="checkbox" value="Other"> Other</label>
+        </div>
+      </div>
+      <div class="form-group full">
+        <label>Where are you in your job search?</label>
+        <select id="f-stage">
+          <option value="">Select stage</option>
+          <option>Just exploring options</option>
+          <option>Actively applying</option>
+          <option>Have interviews coming up</option>
+          <option>Received an offer, deciding</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label>Anything specific you would like help with? (optional)</label>
+        <textarea id="f-notes" placeholder="e.g. I struggle with behavioural interview questions, or I want to tailor my CV for a specific role..." style="font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 12px;outline:none;resize:vertical;min-height:80px;width:100%;transition:border-color 0.18s,box-shadow 0.18s;" onfocus="this.style.borderColor='var(--accent)';this.style.boxShadow='0 0 0 3px rgba(37,99,235,0.1)'" onblur="this.style.borderColor='var(--border)';this.style.boxShadow='none'"></textarea>
+      </div>
+    </div>
+
+    <div class="error-msg" id="err-msg">Please fill in all required fields and select at least one session.</div>
+
+    <button class="submit-btn" id="sub-btn" onclick="submitForm()" disabled style="margin-top:1.25rem;">
+      Select a session to continue
+    </button>
+  </div>
+
+  <!-- Success -->
+  <div class="success-screen" id="success-screen">
+    <div class="success-icon">
+      <svg viewBox="0 0 24 24"><polyline points="4,12 9,17 20,7"/></svg>
+    </div>
+    <div class="success-title">You're registered!</div>
+    <div class="success-sub" id="success-sub"></div>
+    <div class="success-detail" id="success-detail"></div>
+  </div>
+
+  <p class="note">Slots are limited to 10 per session. Registration is on a first-come, first-served basis.<br>You will receive a confirmation once your spot is confirmed.</p>
+
+  <div style="margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--border);text-align:center;">
+    <p style="font-size:13px;font-weight:500;color:var(--ink-muted);">Dr. Khalil Laghari</p>
+    <p style="font-size:12px;color:var(--ink-faint);">Adjunct Professor &amp; Industry Leader &nbsp;·&nbsp; University of Birmingham Dubai</p>
+  </div>
+
+</div>
+
+<script>
+  const TOTAL = 10;
+  // Simulate some taken slots — replace these numbers with real data from a backend/sheet
+  const taken = { interview: 3, cv: 1, portfolio: 0 };
+  const selected = { interview: false, cv: false, portfolio: false };
+  const names = { interview: 'Mock Interview', cv: 'CV Review', portfolio: 'Portfolio Review' };
+
+  function buildPips(session) {
+    const container = document.getElementById('pips-' + session);
+    const leftEl = document.getElementById('left-' + session);
+    container.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'slot-pip' + (i < taken[session] ? ' taken' : '');
+      container.appendChild(d);
+    }
+    const left = TOTAL - taken[session];
+    leftEl.textContent = left === 0 ? 'No slots left' : left + ' slot' + (left === 1 ? '' : 's') + ' remaining';
+    leftEl.className = 'slots-left' + (left === 0 ? ' gone' : left <= 3 ? ' warn' : '');
+    if (left === 0) {
+      const card = document.getElementById('card-' + session);
+      card.classList.add('full');
+    }
+  }
+
+  ['interview', 'cv', 'portfolio'].forEach(buildPips);
+
+  function toggleSession(s) {
+    if (taken[s] >= TOTAL) return;
+    selected[s] = !selected[s];
+    document.getElementById('card-' + s).classList.toggle('selected', selected[s]);
+    updateButton();
+  }
+
+  function updateButton() {
+    const any = Object.values(selected).some(Boolean);
+    const btn = document.getElementById('sub-btn');
+    btn.disabled = !any;
+    btn.textContent = any ? 'Register for selected session(s) →' : 'Select a session to continue';
+  }
+
+  // ⬇️ Paste your Google Apps Script Web App URL here after deploying
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzTFX18sF9wMoX_-s1KFA_GAPjpM0pTE5JUVXNOnz0-w1m8SyNwhegV3NovEMvWY-kNwA/exec';
+
+  async function submitForm() {
+    const name      = document.getElementById('f-name').value.trim();
+    const id        = document.getElementById('f-id').value.trim();
+    const email     = document.getElementById('f-email').value.trim();
+    const programme = document.getElementById('f-programme').value.trim();
+    const roles     = document.getElementById('f-roles').value.trim();
+    const year      = document.getElementById('f-year').value;
+    const stage     = document.getElementById('f-stage').value;
+    const notes     = document.getElementById('f-notes').value.trim();
+    const errEl     = document.getElementById('err-msg');
+
+    const industries = [...document.querySelectorAll('#industry-tags input:checked')].map(c => c.value).join(', ');
+    const chosen     = Object.keys(selected).filter(s => selected[s]).map(s => names[s]);
+
+    if (!name || !id || !email || !programme || !roles || !chosen.length) {
+      errEl.classList.add('show');
+      return;
+    }
+    errEl.classList.remove('show');
+
+    const btn = document.getElementById('sub-btn');
+    btn.disabled = true;
+    btn.textContent = 'Submitting…';
+
+    const payload = { name, studentId: id, email, programme, year, sessions: chosen.join(', '), roles, industries, stage, notes };
+
+    try {
+      await fetch(SHEET_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    } catch (err) {
+      console.warn('Submission error:', err);
+    }
+
+    document.getElementById('form-section').style.display = 'none';
+    document.querySelector('.sessions').style.display = 'none';
+    document.querySelector('.legend').style.display = 'none';
+    document.querySelectorAll('.section-title')[0].style.display = 'none';
+
+    const screen = document.getElementById('success-screen');
+    screen.classList.add('show');
+    document.getElementById('success-sub').textContent =
+      'Thank you, ' + name + '! Your registration for the following session' + (chosen.length > 1 ? 's' : '') + ' has been received:';
+    document.getElementById('success-detail').innerHTML =
+      chosen.map(c => '✓ ' + c).join('&nbsp;&nbsp;·&nbsp;&nbsp;') +
+      '<br><span style="font-size:12px;color:#166534;margin-top:4px;display:block;">A confirmation will be sent to ' + email + '</span>';
+  }
+
+  function copyAnn(btn) {
+    const text = document.getElementById('ann-text').innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Copied ✓';
+      setTimeout(() => btn.textContent = 'Copy announcement', 2000);
+    });
+  }
+</script>
+</body>
+</html>
