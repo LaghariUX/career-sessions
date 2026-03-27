@@ -378,28 +378,12 @@
 
   <!-- Header -->
   <div class="header">
-    <span class="header-eyebrow">Career Development</span>
+    <span class="header-eyebrow">University of Birmingham Dubai</span>
     <h1>Book Your Session</h1>
-    <p>30-minute one-on-one sessions with our advisors. Only 10 slots per session — first registered, first served.</p>
-  </div>
-
-  <!-- Announcement Banner -->
-  <div class="announcement">
-    <div class="ann-label">Canvas Announcement</div>
-    <div class="ann-title">Register for Career Development Sessions</div>
-    <div class="ann-body" id="ann-text">Dear Students,
-
-We are pleased to offer three career development sessions to support your professional journey. Sessions available:
-
-  • Mock Interview – Practice your interview technique with expert feedback
-  • CV Review – Get tailored advice to strengthen your resume
-  • Portfolio Review – Refine how you present your work
-
-Each session is 30 minutes long. Only 10 slots are available per session — first registered, first served. Register using the form on this page before spots fill up.
-
-We look forward to supporting your career goals. Good luck!</div>
-    <div class="ann-footer">
-      <button class="copy-btn" onclick="copyAnn(this)">Copy announcement</button>
+    <p>30-minute one-on-one sessions with our career advisor. Only 10 slots per session — first registered, first served.</p>
+    <div style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border);display:inline-block;">
+      <p style="font-size:15px;font-weight:500;color:var(--ink);margin-bottom:2px;">Dr. Khalil Laghari</p>
+      <p style="font-size:13px;color:var(--ink-muted);">Adjunct Professor &amp; Industry Leader · University of Birmingham Dubai</p>
     </div>
   </div>
 
@@ -536,6 +520,11 @@ We look forward to supporting your career goals. Good luck!</div>
 
   <p class="note">Slots are limited to 10 per session. Registration is on a first-come, first-served basis.<br>You will receive a confirmation once your spot is confirmed.</p>
 
+  <div style="margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--border);text-align:center;">
+    <p style="font-size:13px;font-weight:500;color:var(--ink-muted);">Dr. Khalil Laghari</p>
+    <p style="font-size:12px;color:var(--ink-faint);">Adjunct Professor &amp; Industry Leader &nbsp;·&nbsp; University of Birmingham Dubai</p>
+  </div>
+
 </div>
 
 <script>
@@ -579,21 +568,45 @@ We look forward to supporting your career goals. Good luck!</div>
     btn.textContent = any ? 'Register for selected session(s) →' : 'Select a session to continue';
   }
 
-  function submitForm() {
+  // ⬇️ Paste your Google Apps Script Web App URL here after deploying
+  const SHEET_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+
+  async function submitForm() {
     const name      = document.getElementById('f-name').value.trim();
     const id        = document.getElementById('f-id').value.trim();
     const email     = document.getElementById('f-email').value.trim();
     const programme = document.getElementById('f-programme').value.trim();
     const roles     = document.getElementById('f-roles').value.trim();
+    const year      = document.getElementById('f-year').value;
+    const stage     = document.getElementById('f-stage').value;
+    const notes     = document.getElementById('f-notes').value.trim();
     const errEl     = document.getElementById('err-msg');
 
-    if (!name || !id || !email || !programme || !roles || !Object.values(selected).some(Boolean)) {
+    const industries = [...document.querySelectorAll('#industry-tags input:checked')].map(c => c.value).join(', ');
+    const chosen     = Object.keys(selected).filter(s => selected[s]).map(s => names[s]);
+
+    if (!name || !id || !email || !programme || !roles || !chosen.length) {
       errEl.classList.add('show');
       return;
     }
     errEl.classList.remove('show');
 
-    const chosen = Object.keys(selected).filter(s => selected[s]).map(s => names[s]);
+    const btn = document.getElementById('sub-btn');
+    btn.disabled = true;
+    btn.textContent = 'Submitting…';
+
+    const payload = { name, studentId: id, email, programme, year, sessions: chosen.join(', '), roles, industries, stage, notes };
+
+    try {
+      await fetch(SHEET_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    } catch (err) {
+      console.warn('Submission error:', err);
+    }
 
     document.getElementById('form-section').style.display = 'none';
     document.querySelector('.sessions').style.display = 'none';
